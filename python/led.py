@@ -36,7 +36,7 @@ elif config.DEVICE == 'blinkstick':
 
 elif config.DEVICE == 'arduino':
     import serial
-    arduino = serial.Serial(SERIAL_PORT, 115200)
+    arduino = serial.Serial(config.SERIAL_PORT, 115200)
 
 _gamma = np.load(config.GAMMA_TABLE_PATH)
 """Gamma lookup table used for nonlinear brightness correction"""
