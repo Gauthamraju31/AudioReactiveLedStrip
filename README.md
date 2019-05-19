@@ -1,3 +1,7 @@
+# Original Repo
+https://github.com/scottlawsonbc/audio-reactive-led-strip
+Added Support for arduino control over serial in this repo
+
 # Audio Reactive LED Strip
 Real-time LED strip music visualization using Python and the ESP8266 or Raspberry Pi.
 
@@ -18,9 +22,20 @@ The repository includes everything needed to build an LED strip music visualizer
   - Constructing 1D visualizations ([visualization.py](python/visualization.py))
   - Sending pixel information to the ESP8266 over WiFi ([led.py](python/led.py))
   - Configuration and settings ([config.py](python/config.py))
+- Arduino serial communication ([ws2811_controller_arduino.ino](arduino/ws2811_controller_arduino/ws2811_controller_arduino.ino))
 - Arduino firmware for the ESP8266 ([ws2812_controller_esp8266.ino](arduino/ws2812_controller_esp8266/ws2812_controller_esp8266.ino))
 
+
 # What do I need to make one?
+## Computer + Arduino
+- Computer with Python 2.7 or 3.5 ([Anaconda](https://www.continuum.io/downloads) is recommended on Windows)
+- Any Variant for Arduino
+- WS2811 LED Strip
+- 12V power supply
+
+Limitations when using the Arduino:
+- The communication protocol between the computer and ESP8266 currently supports a maximum of 256 LEDs.
+
 ## Computer + ESP8266
 To build a visualizer using a computer and ESP8266, you will need:
 - Computer with Python 2.7 or 3.5 ([Anaconda](https://www.continuum.io/downloads) is recommended on Windows)
@@ -87,6 +102,10 @@ After installing the Arduino IDE and ESP8266 addon, use the [Arduino Library Man
 <!-- This [ws2812b i2s library](https://github.com/JoDaNl/esp8266_ws2812_i2s) must be downloaded and installed in the Arduino libraries folder.
  -->
 ## Hardware Connections
+
+### Arduino
+Arduino pin 6 is used to control the DIN of the LED strip
+
 ### ESP8266
 The ESP8266 has hardware support for [I²S](https://en.wikipedia.org/wiki/I%C2%B2S) and this peripheral is used <!-- by the [ws2812b i2s library](https://github.com/JoDaNl/esp8266_ws2812_i2s)  -->to control the ws2812b LED strip. This signficantly improves performance compared to bit-banging the IO pin. Unfortunately, this means that the LED strip **must** be connected to the RX1 pin, which is not accessible in some ESP8266 modules (such as the ESP-01).
 

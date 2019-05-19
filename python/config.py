@@ -14,6 +14,9 @@ audio input and control the LED strip directly.
 
 'blinkstick' means that a BlinkstickPro is connected to this PC which will be used
 to control the leds connected to it.
+
+'arduino' means that you are using an arduino board to control the LED strip
+and commands will be sent to the arduino over serial.
 """
 
 if DEVICE == 'esp8266':
@@ -43,7 +46,11 @@ if DEVICE == 'blinkstick':
     """Set to True because blinkstick doesn't use hardware dithering"""
 
 if DEVICE == 'arduino':
+    SERIAL_PORT = '/dev/ttyUSB0'
+    """Define the serial port which arduino is connected to for serial communication"""
     SOFTWARE_GAMMA_CORRECTION = False
+    """Set to False because the firmware handles gamma correction + dither"""
+
 
 USE_GUI = True
 """Whether or not to display a PyQtGraph GUI plot of visualization"""

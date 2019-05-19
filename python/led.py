@@ -36,7 +36,7 @@ elif config.DEVICE == 'blinkstick':
 
 elif config.DEVICE == 'arduino':
     import serial
-    arduino = serial.Serial('/dev/ttyUSB0', 115200)
+    arduino = serial.Serial(SERIAL_PORT, 115200)
 
 _gamma = np.load(config.GAMMA_TABLE_PATH)
 """Gamma lookup table used for nonlinear brightness correction"""
@@ -142,6 +142,20 @@ def _update_blinkstick():
     stick.set_led_data(0, newstrip)
 
 def _update_arduino():
+    """Sends Serial packets to Arduino to update LED strip values
+
+    The Arduino will receive and decode the packets to determine what values
+    to display on the LED strip. The communication protocol supports LED strips
+    with a maximum of 256 LEDs.
+
+    The packet encoding scheme is:
+        |i|r|g|b|
+    where
+        i (0 to 255): Index of LED to change (zero-based)
+        r (0 to 255): Red value of LED
+        g (0 to 255): Green value of LED
+        b (0 to 255): Blue value of LED
+    """
     global pixels, _prev_pixels, ret
     # Truncate values and cast to integer
     pixels = np.clip(pixels, 0, 255).astype(int)
@@ -163,15 +177,9 @@ def _update_arduino():
                 m.append(p[0][i])  # Pixel red value
                 m.append(p[1][i])  # Pixel green value
                 m.append(p[2][i])  # Pixel blue value
-                #m.append('\n')
-        m_str = m
         m = m if _is_python_2 else bytes(m)
-        #print("packet: ",m_str)
         arduino.write(m)
-        #sleep(0.1)
         ret = arduino.readline()
-        #print(ret)
-        # _sock.sendto(m, (config.UDP_IP, config.UDP_PORT))
     _prev_pixels = np.copy(p)
 
 
